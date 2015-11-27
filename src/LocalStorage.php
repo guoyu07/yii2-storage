@@ -42,6 +42,8 @@ class LocalStorage extends Component implements StorageInterface
         if (!$file || !$content) {
             return false;
         }
+
+        $file = $this->normalizeFile($file);
         $realPath = $this->getRealPath($file);
         echo $realPath;
         if ($this->makeDir(dirname($realPath))) {
@@ -55,9 +57,12 @@ class LocalStorage extends Component implements StorageInterface
      */
     public function read($file)
     {
+        $file = $this->normalizeFile($file);
+
         if (!$this->exists($file)) {
             throw new Exception("File not found.");
         }
+
         $filename = $this->getRealPath($file);
 
         return file_get_contents($filename);
@@ -68,7 +73,28 @@ class LocalStorage extends Component implements StorageInterface
      */
     public function exists($file)
     {
+        $file = $this->normalizeFile($file);
+
         return file_exists($this->getRealPath($file));
+    }
+
+    /**
+     * 标准化
+     *
+     * @param string $file
+     * @return string
+     */
+    protected function normalizeFile($file)
+    {
+        $file = str_replace("\\", '/', $file);
+        $nodes = explode('/', $file);
+        $sections = [];
+        foreach ($nodes as $node) {
+            if ($node != '') {
+                $sections[] = $node;
+            }
+        }
+        return implode(DIRECTORY_SEPARATOR, $sections);
     }
 
     /**
