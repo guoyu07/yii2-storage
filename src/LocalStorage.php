@@ -43,9 +43,8 @@ class LocalStorage extends Component implements StorageInterface
             return false;
         }
 
-        $file = $this->normalizeFile($file);
         $realPath = $this->getRealPath($file);
-        echo $realPath;
+
         if ($this->makeDir(dirname($realPath))) {
             return false !== file_put_contents($realPath, $content);
         }
@@ -57,8 +56,6 @@ class LocalStorage extends Component implements StorageInterface
      */
     public function read($file)
     {
-        $file = $this->normalizeFile($file);
-
         if (!$this->exists($file)) {
             throw new Exception("File not found.");
         }
@@ -73,8 +70,6 @@ class LocalStorage extends Component implements StorageInterface
      */
     public function exists($file)
     {
-        $file = $this->normalizeFile($file);
-
         return file_exists($this->getRealPath($file));
     }
 
@@ -103,10 +98,10 @@ class LocalStorage extends Component implements StorageInterface
      */
     protected function getRealPath($file)
     {
-        $realPath = \Yii::getAlias($this->basePath) . DIRECTORY_SEPARATOR . $file;
-        $dir = dirname($realPath);
-        $name = basename($realPath);
-        return $dir . DIRECTORY_SEPARATOR . $name;
+        $file = \Yii::getAlias($this->basePath) . DIRECTORY_SEPARATOR . $file;
+        $file = $this->normalizeFile($file);
+
+        return $file;
     }
 
     /**
