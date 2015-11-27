@@ -1,0 +1,25 @@
+{
+    "name": "yiizh/yii2-storage",
+    "description": "The storage extension for Yii2.",
+    "type": "yii2-extension",
+    "keywords": [
+        "yii2",
+        "extension",
+        "storage"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Di.Zhang",
+            "email": "zhangdi_me@163.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "yiizh\\storage\\": "src"
+        }
+    }
+}
