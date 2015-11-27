@@ -5,13 +5,17 @@
 
 namespace yiizh\storage;
 
-
 use OSS\Core\OssException;
 use OSS\OssClient;
 use yii\base\Component;
 use yii\base\InvalidParamException;
 use yii\log\Logger;
 
+/**
+ * Class AliyunStorage
+ *
+ * @package yiizh\storage
+ */
 class AliyunStorage extends Component implements StorageInterface
 {
     /**
@@ -73,6 +77,7 @@ class AliyunStorage extends Component implements StorageInterface
     public function save($file, $content)
     {
         try {
+            $file = $this->normalizeFile($file);
             $this->getClient()->putObject($this->bucket, $file, $content);
             return true;
         } catch (OssException $e) {
@@ -86,6 +91,7 @@ class AliyunStorage extends Component implements StorageInterface
      */
     public function read($file)
     {
+        $file = $this->normalizeFile($file);
         return $this->getClient()->getObject($this->bucket, $file);
     }
 
@@ -94,7 +100,27 @@ class AliyunStorage extends Component implements StorageInterface
      */
     public function exists($file)
     {
+        $file = $this->normalizeFile($file);
         return $this->getClient()->doesObjectExist($this->bucket, $file);
+    }
+
+    /**
+     * 标准化
+     *
+     * @param string $file
+     * @return string
+     */
+    protected function normalizeFile($file)
+    {
+        $file = str_replace("\\", '/', $file);
+        $nodes = explode('/', $file);
+        $sections = [];
+        foreach ($nodes as $node) {
+            if ($node != '') {
+                $sections[] = $node;
+            }
+        }
+        return implode('/', $sections);
     }
 
     /**
