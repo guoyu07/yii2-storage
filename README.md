@@ -10,7 +10,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist yiizh/yii2-storage "*"
+php composer.phar require --prefer-dist yiizh/yii2-storage "dev-master"
 ```
 
 or add
@@ -25,7 +25,15 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+Change config file :
 
 ```php
-<?= \yiizh\storage\AutoloadExample::widget(); ?>```
+...
+    'components' => [
+        'storage' => [
+            'class'=>'\yiizh\storage\LocalStorage',
+            'basePath' => '@app/web/uploads'
+        ]
+    ]
+...
+```
