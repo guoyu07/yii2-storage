@@ -9,6 +9,7 @@ namespace yiizh\storage;
 use OSS\Core\OssException;
 use OSS\OssClient;
 use yii\base\Component;
+use yii\base\InvalidParamException;
 use yii\log\Logger;
 
 class AliyunStorage extends Component implements StorageInterface
@@ -44,6 +45,27 @@ class AliyunStorage extends Component implements StorageInterface
     public $bucket;
 
     private $_client;
+
+    /**
+     * @inheritDoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->accessKey == null) {
+            throw new InvalidParamException('The "accessKey" property must be set.');
+        }
+
+        if ($this->accessSecret == null) {
+            throw new InvalidParamException('The "accessSecret" property must be set.');
+        }
+
+        if ($this->endpoint == null) {
+            throw new InvalidParamException('The "endpoint" property must be set.');
+        }
+    }
+
 
     /**
      * @inheritDoc
