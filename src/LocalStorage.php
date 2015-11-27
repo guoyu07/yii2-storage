@@ -12,6 +12,11 @@ use yii\base\InvalidParamException;
 use yii\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 
+/**
+ * Class LocalStorage
+ *
+ * @package yiizh\storage
+ */
 class LocalStorage extends Component implements StorageInterface
 {
     public $basePath;
@@ -94,6 +99,4 @@ class LocalStorage extends Component implements StorageInterface
             return true;
         }
     }
-
-
 }
